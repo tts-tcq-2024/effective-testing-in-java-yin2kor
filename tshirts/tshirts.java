@@ -1,4 +1,4 @@
-public class Tshirts {
+public class tshirts {
     static String size(int cms) {
         if(cms < 38) {
             return "S";
