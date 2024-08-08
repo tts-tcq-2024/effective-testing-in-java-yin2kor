@@ -1,15 +1,21 @@
 public class misaligned {
     static String majorColors[] = {"White", "Red", "Black", "Yellow", "Violet"};
     static String minorColors[] = {"Blue", "Orange", "Green", "Brown", "Slate"};
-
-    static int printColorMap() {
-
+  staic void printOnConsole(string message){
+                      System.out.println(message);
+  }
+ 
+      
+    static int printColorMap(Function<string> printFn) {
+        
         int i = 0, j = 0;
         for (i = 0; i < 5; i++) {
             for (j = 0; j < 5; j++) {
-                System.out.printf(getColorComboInfo(i, i));
+                printFn(getColorComboInfo(i, i));
+                
             }
         }
+        
         return i * j;
     }
 
