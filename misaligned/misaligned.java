@@ -3,9 +3,6 @@ import java.util.function.Function;
 public class misaligned {
     static String majorColors[] = {"White", "Red", "Black", "Yellow", "Violet"};
     static String minorColors[] = {"Blue", "Orange", "Green", "Brown", "Slate"};
-  static void printOnConsole(String message){
-                      System.out.println(message);
-  }
  
       
     static int printColorMap(Function<String, Void> printFn) {
@@ -54,6 +51,15 @@ public class misaligned {
         assert (getColorComboInfo(4,3).equals(24 + " | Violet | Brown"));
         assert (getColorComboInfo(4,4).equals(25 + " | Violet | Slate"));
         System.out.println("All is well (maybe!)");
+    }
+}
+
+class PrintOnConsole implements Function<String, Void> {
+
+    @Override
+    public Void apply(String s) {
+        System.out.println(s);
+        return null;
     }
 }
 
