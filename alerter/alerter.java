@@ -1,18 +1,13 @@
+
 public class alerter {
     static int alertFailureCount = 0;
+
     //function Pointer , interface, abstraction
-    interface INetworkHandler {
-            int networkAlert(float celcius);
+    public interface INetworkHandler {
+        int networkAlert(float celcius);
     }
 
-    //Low Level Module (Service)
-   class RealTimeNetworkHandler implements INetworkHandler{
-    @Override
-    public int networkAlert(float celcius) {
-        //Network request , NIC , Socket , Credentials
-    }
-}
-    
+
     //Hig Level Module depends on Abstarction of Low Level Module
     static void alertInCelcius(float farenheit, INetworkHandler mNetworkHandler) {
         float celcius = (farenheit - 32) * 50 / 9;//calculating
@@ -26,49 +21,53 @@ public class alerter {
         }
     }
 
-    class NetworkHandlerStub implements INetworkHandler{
-    @Override
-    public int networkAlert(float celcius) {
-    
-       return 500;
-    }
-}
 
-    class NetworkHandlerMock implements INetworkHandler{
-        public networkAlertCallCount=0;
-        public float actualCelciusFromAlertInCelcius=celcius;
-    @Override
-    public int networkAlert(float celcius) {
-    networkAlertCallCount++;
-        actualCelciusFromAlertInCelcius=celcius;
-       return 500;
-    }
-}
-
-    static void testEnv(){
+    static void testEnv() {
+        alertInCelcius(400.5f, new RealTimeNetworkHandler());
+        alertInCelcius(303.6f, new RealTimeNetworkHandler());
         //state based testing
-        alertInCelcius(400.5f,new NetworkHandlerStub() );
+        alertInCelcius(400.5f, new NetworkHandlerMock(500));
         assert (alertFailureCount == 1);
 
         //Behavior/interaction Testing
-        floate epectedCeliusValueToBeRecievedByNetworkHandler=204.72222;
-        NetworkHandlerMock mockObj=new NetworkHandlerMock()
-          alertInCelcius(400.5f, );
-        EXPECT_EQ(epectedCeliusValueToBeRecievedByNetworkHandler,mockObj.actualCelciusFromAlertInCelcius);
-        
-        
- 
+        float expectedCelciusValueToBeReceivedByNetworkHandler = 204.72222f;
+        NetworkHandlerMock mockObj = new NetworkHandlerMock(200);
+        alertInCelcius(400.5f, mockObj);
+        assert expectedCelciusValueToBeReceivedByNetworkHandler == mockObj.actualCelciusFromAlertInCelcius;
     }
 
     public static void main(String[] args) {
-        alertInCelcius(400.5f, new RealTimeNetworkHandler());
-        alertInCelcius(303.6f , new RealTimeNetworkHandler());
-            System.out.printf("%d alerts failed.\n", alertFailureCount);
+        testEnv();
+        System.out.printf("%d alerts failed.\n", alertFailureCount);
         System.out.println("All is well (maybe!)\n");
     }
 }
 
+class NetworkHandlerMock implements alerter.INetworkHandler {
+    public int networkAlertCallCount = 0;
+    public float actualCelciusFromAlertInCelcius;
+    public int responceCode;
 
+    public NetworkHandlerMock(int code) {
+        responceCode = code;
+    }
+
+    @Override
+    public int networkAlert(float celcius) {
+        networkAlertCallCount++;
+        actualCelciusFromAlertInCelcius = celcius;
+        return responceCode;
+    }
+}
+
+//Low Level Module (Service)
+class RealTimeNetworkHandler implements alerter.INetworkHandler {
+    @Override
+    public int networkAlert(float celcius) {
+        //Network request , NIC , Socket , Credentials
+        return 200;
+    }
+}
 
 
 

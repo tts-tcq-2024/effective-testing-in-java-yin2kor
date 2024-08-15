@@ -1,18 +1,19 @@
+import java.util.function.Function;
+
 public class misaligned {
     static String majorColors[] = {"White", "Red", "Black", "Yellow", "Violet"};
     static String minorColors[] = {"Blue", "Orange", "Green", "Brown", "Slate"};
-  staic void printOnConsole(string message){
+  static void printOnConsole(String message){
                       System.out.println(message);
   }
  
       
-    static int printColorMap(Function<string> printFn) {
+    static int printColorMap(Function<String, Void> printFn) {
         
         int i = 0, j = 0;
         for (i = 0; i < 5; i++) {
             for (j = 0; j < 5; j++) {
-                printFn(getColorComboInfo(i, i));
-                
+                printFn.apply(getColorComboInfo(i, i));
             }
         }
         
@@ -25,7 +26,7 @@ public class misaligned {
 
 
     public static void main(String[] args) {
-        int result = printColorMap();
+        int result = printColorMap(new PrintOnConsole());
         assert (result == 25);
         assert (getColorComboInfo(0,0).equals(1 + " | White | Blue"));
         assert (getColorComboInfo(0,1).equals(2 + " | White | Orange"));
@@ -55,3 +56,4 @@ public class misaligned {
         System.out.println("All is well (maybe!)");
     }
 }
+
